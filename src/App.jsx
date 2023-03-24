@@ -9,7 +9,10 @@ const memberLists = [
 
 function App() {
   const [list, setList] = useState([]);
+  const [contentH, setContentH] = useState(0);
+
   useEffect(() => {
+    setContentH(window.innerHeight - 50);
     console.log('hello')
     const fromStorage = localStorage.getItem('members');
     if (fromStorage && JSON.parse(fromStorage)?.length === memberLists.length) {
@@ -38,7 +41,7 @@ function App() {
   }
   return (
     <>
-      <div className="container py-4 mx-auto max-content">
+      <div className="container py-4 mx-auto max-content" style={{ height: `${contentH > 0 ? contentH+'px' : 'auto'}`}}>
         {/*summary*/}
         <div className="flex justify-center w-full mb-5">
           <div className="stats shadow">
@@ -51,7 +54,7 @@ function App() {
 
             <div className="stat p-2">
               <div className="stat-value">86%</div>
-              <div className="stat-desc text-secondary">{list.filter(m => m.status).length} remaining</div>
+              <div className="stat-desc text-error">{list.filter(m => m.status).length} remaining</div>
             </div>
 
           </div>
@@ -76,7 +79,7 @@ function App() {
 
       </div>
 
-      <div className="text-center bottom-1.5 sticky">
+      <div className="text-center bottom-0 sticky">
         <ul className="menu menu-horizontal bg-base-100 rounded-box">
           <li>
             {/*add record btn*/}
