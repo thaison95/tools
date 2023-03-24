@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    height: 100vh;
+}
+
 .max-content {
-    max-height: calc(100vh - 80px);
+    max-height: calc(100vh - 50px);
     overflow-y: scroll;
 }
