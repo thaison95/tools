@@ -39,11 +39,12 @@ function App() {
     setList(copyList);
     localStorage.setItem('members', JSON.stringify(copyList));
   }
+
   return (
     <>
       <div className="container py-4 mx-auto max-content" style={{ height: `${contentH > 0 ? contentH+'px' : 'auto'}`}}>
         {/*summary*/}
-        <div className="flex justify-center w-full mb-5">
+        <div id="summary-panel" className="flex justify-center w-full mb-5">
           <div className="stats shadow">
 
             <div className="stat p-2">
@@ -80,10 +81,10 @@ function App() {
       </div>
 
       <div className="text-center bottom-0 sticky">
-        <ul className="menu menu-horizontal bg-base-100 rounded-box">
+        <ul className="inline-flex flex-row bg-base-100 rounded-box">
           <li>
             {/*add record btn*/}
-            <div className="">
+            <a className="">
               {/* The button to open modal */}
               <label htmlFor="my-modal-1">
                 <svg xmlns="http://www.w3.org/2000/svg" id="Icons" viewBox="0 0 60 60" width="36" height="36">
@@ -105,12 +106,12 @@ function App() {
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
           </li>
 
           <li>
             {/*add member btn*/}
-            <div className="">
+            <a className="">
               {/* The button to open modal */}
               <label htmlFor="my-modal">
                 <svg id="Слой_1" enableBackground="new 0 0 512 512" height="40" viewBox="0 0 512 512" width="40"
@@ -139,7 +140,7 @@ function App() {
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
           </li>
         </ul>
       </div>

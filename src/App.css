@@ -5,3 +5,11 @@
 .max-content {
     overflow-y: scroll;
 }
+li {
+    width: 50px;
+}
+
+li label {
+    display: inline-block;
+    text-align: center;
+}
