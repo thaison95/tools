@@ -13,3 +13,6 @@ li label {
     display: inline-block;
     text-align: center;
 }
+.d-flex{
+	display: flex;
+}
