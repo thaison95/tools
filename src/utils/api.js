@@ -31,7 +31,6 @@ export const getOrders = async () => {
   const menu = await getDocs(
     collection(db, COLLECTIONS.PASSIO_ORDERS)
   );
-  console.log(omit(menu.docs[0].data(), 'list'))
   return groupBy(omit(menu.docs[0].data(), 'list'), 'name');
 }
 
@@ -45,6 +44,7 @@ export const addItem = async (data) => {
 export const updatePaidStatus = async (memName) => {
   const todayOrderRef = doc(db, COLLECTIONS.PASSIO_ORDERS, '9.4.2023');
   const fieldToUpdate = `${memName}.status`;
+
   await updateDoc(todayOrderRef, {
     [fieldToUpdate]: true
   });

@@ -1,11 +1,17 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 
 function AddItemModal({menu, mems, onAddItem}) {
+  const closeRef = useRef();
   const [itemDetail, setItemDetail] = useState({});
   const onSelectItem = (itemName) => {
     const item = menu.filter(m => m.name === itemName)[0];
-    setItemDetail(pre => ({ ...pre, ...item, status: false }))
+    setItemDetail(pre => ({...pre, ...item, status: false}))
   };
+  const validateSelectItem = () => {
+    if (!itemDetail.belong || !itemDetail.name) return;
+    closeRef.current.click();
+    onAddItem(itemDetail);
+  }
   return (
     <>
       {/*add record btn*/}
@@ -28,7 +34,8 @@ function AddItemModal({menu, mems, onAddItem}) {
       {/* Put this part before </body> tag */}
       <input type='checkbox' id='my-modal-1' className='modal-toggle'/>
       <div className='modal'>
-        <div className='modal-box'>
+        <div className='modal-box relative'>
+          <label ref={closeRef} htmlFor="my-modal-1" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
           <h3 className='font-bold text-lg'>Chọn món</h3>
 
           <select className="mt-2 select select-bordered w-full max-w-xs"
@@ -48,7 +55,7 @@ function AddItemModal({menu, mems, onAddItem}) {
           </select>
 
           <div className='modal-action'>
-            <label htmlFor='my-modal-1' className='btn' onClick={() => onAddItem(itemDetail)}>
+            <label className='btn' onClick={validateSelectItem}>
               Chốt!
             </label>
           </div>
