@@ -23,7 +23,6 @@ function App() {
   const fetchOrders = async () => {
     const ordersList = await getOrders();
     setOrders(ordersList);
-    console.log(orders);
   }
 
 
@@ -36,9 +35,8 @@ function App() {
   }, []);
 
   const onAddItem = async (itemDetail) => {
-    // await addItem(itemDetail);
-    // fetchOrders();
-    console.log('zz', itemDetail);
+    await addItem(itemDetail);
+    fetchOrders();
   };
 
   const onPaid = async (memName) => {
