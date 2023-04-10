@@ -4,6 +4,7 @@ import './App.css';
 
 import AddItemModal from "./components/AddItemModal";
 import {getMenu, getOrders, passioMembers, addItem, updatePaidStatus} from "./utils/api";
+import Paid from "./components/Paid";
 
 function App() {
   const inputRef = useRef('');
@@ -35,11 +36,13 @@ function App() {
   }, []);
 
   const onAddItem = async (itemDetail) => {
-    await addItem(itemDetail);
-    fetchOrders();
+    // await addItem(itemDetail);
+    // fetchOrders();
+    console.log('zz', itemDetail);
   };
 
   const onPaid = async (memName) => {
+    console.log(memName);
     await updatePaidStatus(memName);
     fetchOrders();
   };
@@ -74,14 +77,14 @@ function App() {
               {orders[key].length && orders[key].map(item => {
                 return (
                   <div className='flex justify-center w-full mb-3' key={item.belong}>
-                    <div className='stats shadow w-72 grid-cols-5 items-center'>
-                      <div className='stat p-2 col-span-3'>
+                    <div className='stats shadow w-72 grid-cols-8 items-center'>
+                      <div className='stat p-2 col-span-5'>
                         <div className='stat-value text-neutral text-lg pl-4'>
                           {item.belong}
                           <span className="text-primary ml-3">{item.price - 0.1 * item.price}</span>
                         </div>
                       </div>
-                      <PaidStatus status={item.status} onPaid={() => onPaid(item.belong)} />
+                      <Paid memName={item.belong} status={item.status} onPaid={() => onPaid(item.belong)} />
                     </div>
                   </div>
                 );
@@ -156,12 +159,3 @@ function App() {
 }
 
 export default App;
-
-const PaidStatus = ({ status, onPaid }) =>
-  status ? (
-    <div className='badge badge-success gap-2 p-4 font-bold'>Paid</div>
-  ) : (
-    <div className='badge badge-error gap-2 items-center p-4 font-bold' onClick={onPaid}>
-      Unpaid
-    </div>
-  );
