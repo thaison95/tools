@@ -13,6 +13,11 @@ import { groupBy, omit } from 'lodash';
 import { db } from '../firebase-config';
 import { COLLECTIONS } from './constants';
 
+const getTodayStr = () => {
+  const todayTime = new Date();
+  return todayTime.getDate() + '.' + (todayTime.getMonth() + 1) + '.' + todayTime.getFullYear();
+}
+
 export const passioMembers = async () => {
   const mem = await getDocs(
     collection(db, COLLECTIONS.PASSIO_MEMBERS)
@@ -35,14 +40,14 @@ export const getOrders = async () => {
 }
 
 export const addItem = async (data) => {
-  const todayOrderRef = doc(db, COLLECTIONS.PASSIO_ORDERS, '9.4.2023');
+  const todayOrderRef = doc(db, COLLECTIONS.PASSIO_ORDERS, getTodayStr());
   return updateDoc(todayOrderRef, {
     [data.belong]: data
   });
 }
 
 export const updatePaidStatus = async (memName) => {
-  const todayOrderRef = doc(db, COLLECTIONS.PASSIO_ORDERS, '9.4.2023');
+  const todayOrderRef = doc(db, COLLECTIONS.PASSIO_ORDERS, getTodayStr());
   const fieldToUpdate = `${memName}.status`;
 
   await updateDoc(todayOrderRef, {
