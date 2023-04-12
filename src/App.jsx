@@ -11,7 +11,8 @@ function App() {
   const [contentH, setContentH] = useState(0);
   const [members, setMembers] = useState(null);
   const [menu, setMenu] = useState([]);
-  const [orders, setOrders] = useState([]);
+  const [grOrder, setGrOrder] = useState({});
+  const [orderInArr, setOrderInArr] = useState([]);
   const [inputData, setInputData] = useState('');
 
   const fetchData = async () => {
@@ -21,12 +22,10 @@ function App() {
   };
 
   const fetchOrders = async () => {
-    const ordersList = await getOrders();
-    setOrders(ordersList);
+    const { orders, grOrder } = await getOrders();
+    setOrderInArr(orders);
+    setGrOrder(grOrder);
   }
-
-
-  useEffect(() => {}, []);
 
   useEffect(() => {
     setContentH(window.innerHeight - 50);
@@ -40,10 +39,12 @@ function App() {
   };
 
   const onPaid = async (memName) => {
-    console.log(memName);
     await updatePaidStatus(memName);
     fetchOrders();
   };
+
+  const sum = orderInArr.reduce((rs, cur) => rs += cur.price, 0);
+  const sumToShow = sum ? (sum - sum * 0.1)/1000 : 0;
 
   return (
     <>
@@ -54,25 +55,26 @@ function App() {
         <div id='summary-panel' className='flex justify-center w-full mb-5'>
           <div className='stats shadow'>
             <div className='stat p-2'>
-              <div className='stat-title'>Total {members?.length || 0} items</div>
-              <div className='stat-value text-primary'>123k</div>
+              <div className='stat-title'>{new Date().toDateString()}</div>
+              <div className='stat-value text-primary'>{sumToShow + 'k'}</div>
               <div className='stat-desc'>10% discount applied</div>
             </div>
 
             <div className='stat p-2'>
-              <div className='stat-value'>86%</div>
+              <div className='stat-value'>{orderInArr.length ? (orderInArr.length - orderInArr.filter((m) => !m.status).length) / orderInArr.length * 100 : 0}%</div>
+              <div className="stat-title">{orderInArr.length} items</div>
               <div className='stat-desc text-error'>
-                {[].filter((m) => m.status).length} remaining
+                {orderInArr.filter((m) => !m.status).length} remaining
               </div>
             </div>
           </div>
         </div>
 
-        {Object.keys(orders).map((key) => {
+        {Object.keys(grOrder).map((key) => {
           return (
             <div key={key}>
               <div className="divider">{key}</div>
-              {orders[key].length && orders[key].map(item => {
+              {grOrder[key].length && grOrder[key].map(item => {
                 return (
                   <div className='flex justify-center w-full mb-3' key={item.belong}>
                     <div className='stats shadow w-72 grid-cols-8 items-center'>
