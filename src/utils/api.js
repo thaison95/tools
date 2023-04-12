@@ -2,16 +2,15 @@ import {
   collection,
   getDoc,
   doc,
-  addDoc,
   getDocs,
   updateDoc,
-  arrayUnion,
+  setDoc
 } from 'firebase/firestore/lite';
 
-import { groupBy, omit } from 'lodash';
+import {groupBy} from 'lodash';
 
-import { db } from '../firebase-config';
-import { COLLECTIONS } from './constants';
+import {db} from '../firebase-config';
+import {COLLECTIONS} from './constants';
 
 const getTodayStr = () => {
   const todayTime = new Date();
@@ -33,17 +32,17 @@ export const getMenu = async () => {
 }
 
 export const getOrders = async () => {
-  const menu = await getDocs(
-    collection(db, COLLECTIONS.PASSIO_ORDERS)
-  );
-  return groupBy(omit(menu.docs[0].data(), 'list'), 'name');
+  const docRef = doc(db, COLLECTIONS.PASSIO_ORDERS, getTodayStr());
+  const docSnap = await getDoc(docRef);
+  const ordersInArr = Object.entries(docSnap.data()).map(item => item[1]);
+  return {grOrder: groupBy(docSnap.data(), 'name'), orders: ordersInArr};
 }
 
 export const addItem = async (data) => {
   const todayOrderRef = doc(db, COLLECTIONS.PASSIO_ORDERS, getTodayStr());
-  return updateDoc(todayOrderRef, {
+  return setDoc(todayOrderRef, {
     [data.belong]: data
-  });
+  }, { merge: true });
 }
 
 export const updatePaidStatus = async (memName) => {
