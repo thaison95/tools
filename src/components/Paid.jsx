@@ -31,6 +31,7 @@ function hex(buffer) {
 const keys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 const hashed_key = 'd54123de468bd42ea00dafbd777f85fe5fa1ff6404d9838c007953c25c92a1c5';
 
+// eslint-disable-next-line react/prop-types
 function Paid({status, onPaid, memName}) {
   const paidClass = status ? 'badge-success' : 'badge-error';
   const [key, setKey] = useState('');

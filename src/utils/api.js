@@ -6,6 +6,7 @@ import {
   updateDoc,
   setDoc
 } from 'firebase/firestore/lite';
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 import {groupBy} from 'lodash';
 
@@ -58,13 +59,14 @@ export const updatePaidStatus = async (memName) => {
 export const login = async (key) => {
   await auth.operations;
   let user = auth.currentUser;
-  
+
   if (user === null) {
     try {
       await signInWithEmailAndPassword(auth, 'passio@trustingsocial.com', 'ts' + key);
       console.log('logged user',);
     } catch (error) {
       //
+      console.log('e', error);
     }
   }
 }
