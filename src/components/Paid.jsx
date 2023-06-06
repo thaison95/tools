@@ -1,4 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import { login } from '../utils/api';
 
 function sha256(str) {
   // Get the string as arraybuffer.
@@ -37,12 +38,17 @@ function Paid({status, onPaid, memName}) {
   const closeModalRef = useRef();
   const modalId = useRef('modal-' + memName);
 
+  const loginNPay = useCallback(async (key) => {
+    await login(key);
+    onPaid();
+  }, [onPaid]);
+
   const onPaidClick = () => {
     const savedKey = localStorage.getItem('key');
     if (savedKey) {
       sha256(savedKey).then(function (digest) {
         if (digest === hashed_key) {
-          onPaid();
+          loginNPay(savedKey);
         }
       })
     } else {
@@ -56,7 +62,7 @@ function Paid({status, onPaid, memName}) {
       sha256(key).then(function (digest) {
         if (digest === hashed_key) {
           localStorage.setItem('key', key);
-          onPaid();
+          loginNPay(key);
           closeModalRef.current.click();
         }
       })

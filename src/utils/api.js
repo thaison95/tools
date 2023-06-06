@@ -9,7 +9,7 @@ import {
 
 import {groupBy} from 'lodash';
 
-import {db} from '../firebase-config';
+import {db, auth} from '../firebase-config';
 import {COLLECTIONS} from './constants';
 
 const getTodayStr = () => {
@@ -50,7 +50,21 @@ export const updatePaidStatus = async (memName) => {
   const fieldToUpdate = `${memName}.status`;
 
   await updateDoc(todayOrderRef, {
-    [fieldToUpdate]: true
+    [fieldToUpdate]: true,
   });
 
+}
+
+export const login = async (key) => {
+  await auth.operations;
+  let user = auth.currentUser;
+  
+  if (user === null) {
+    try {
+      await signInWithEmailAndPassword(auth, 'passio@trustingsocial.com', 'ts' + key);
+      console.log('logged user',);
+    } catch (error) {
+      //
+    }
+  }
 }
