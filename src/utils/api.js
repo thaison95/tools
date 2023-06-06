@@ -8,7 +8,7 @@ import {
 } from 'firebase/firestore/lite';
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-import {groupBy} from 'lodash';
+import {groupBy, omit} from 'lodash';
 
 import {db, auth} from '../firebase-config';
 import {COLLECTIONS} from './constants';
@@ -34,14 +34,17 @@ export const getMenu = async () => {
 
 export const getOrders = async () => {
   const docRef = doc(db, COLLECTIONS.PASSIO_ORDERS, getTodayStr());
-  const docSnap = await getDoc(docRef);
-  const ordersInArr = Object.entries(docSnap.data()).map(item => item[1]);
-  return {grOrder: groupBy(docSnap.data(), 'name'), orders: ordersInArr};
+  const docSnapRes = await getDoc(docRef);
+  const docSnap = omit(docSnapRes.data(), 'path');
+  const ordersInArr = Object.entries(docSnap).map(item => item[1]);
+
+  return {grOrder: groupBy(docSnap, 'name'), orders: ordersInArr};
 }
 
 export const addItem = async (data) => {
   const todayOrderRef = doc(db, COLLECTIONS.PASSIO_ORDERS, getTodayStr());
   return setDoc(todayOrderRef, {
+    path: data.belong,
     [data.belong]: data
   }, { merge: true });
 }
@@ -51,6 +54,7 @@ export const updatePaidStatus = async (memName) => {
   const fieldToUpdate = `${memName}.status`;
 
   await updateDoc(todayOrderRef, {
+    path: memName,
     [fieldToUpdate]: true,
   });
 
