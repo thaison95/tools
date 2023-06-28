@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import './App.css';
 
@@ -61,7 +61,7 @@ function App() {
             </div>
 
             <div className='stat p-2'>
-              <div className='stat-value'>{orderInArr.length ? (orderInArr.length - orderInArr.filter((m) => !m.status).length) / orderInArr.length * 100 : 0}%</div>
+              <div className='stat-value'>{orderInArr.length ? ((orderInArr.length - orderInArr.filter((m) => !m.status).length) / orderInArr.length * 100).toFixed(2) : 0}%</div>
               <div className="stat-title">{orderInArr.length} items</div>
               <div className='stat-desc text-error'>
                 {orderInArr.filter((m) => !m.status).length} remaining
@@ -73,7 +73,7 @@ function App() {
         {Object.keys(grOrder).map((key) => {
           return (
             <div key={key}>
-              <div className="divider">{key}</div>
+              <div className="divider">{key + ' (' + grOrder[key]?.length + ')'}</div>
               {grOrder[key].length && grOrder[key].map(item => {
                 return (
                   <div className='flex justify-center w-full mb-3' key={item.belong}>

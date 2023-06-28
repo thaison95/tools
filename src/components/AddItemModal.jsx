@@ -1,16 +1,31 @@
+/* eslint-disable react/prop-types */
 import React, {useRef, useState} from 'react';
 
 function AddItemModal({menu, mems, onAddItem}) {
   const closeRef = useRef();
   const [itemDetail, setItemDetail] = useState({});
+  const [isShowNote, setIsShowNote] = useState(false);
+  const refNote = useRef('');
   const onSelectItem = (itemName) => {
     const item = menu.filter(m => m.name === itemName)[0];
+    if (itemName?.includes('cafe')) {
+      setIsShowNote(true);
+    } else {
+      setIsShowNote(false);
+    }
     setItemDetail(pre => ({...pre, ...item, status: false}))
   };
   const validateSelectItem = () => {
     if (!itemDetail.belong || !itemDetail.name) return;
     closeRef.current.click();
-    onAddItem(itemDetail);
+    if (refNote.current) {
+      onAddItem({...itemDetail, name: itemDetail.name + ' (' + refNote.current + ')' });
+    } else {
+      onAddItem(itemDetail);
+    }
+    // reset note
+    setIsShowNote(false);
+    refNote.current = '';
   }
   return (
     <>
@@ -53,6 +68,8 @@ function AddItemModal({menu, mems, onAddItem}) {
               <option key={m.name}>{m.name}</option>
             ))}
           </select>
+
+          {isShowNote && <input type="text" onChange={(e) => refNote.current = e?.target?.value} placeholder="Note" className="mt-2 input input-bordered w-full max-w-xs" />}
 
           <div className='modal-action'>
             <label className='btn' onClick={validateSelectItem}>
