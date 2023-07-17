@@ -59,7 +59,6 @@ function App() {
               <div className="stat-value text-primary">{sumToShow + "k"}</div>
               <div className="stat-desc">10% discount applied</div>
             </div>
-
             <div className="stat p-2">
               <div className="stat-value">
                 {orderInArr.length
