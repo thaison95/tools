@@ -259,7 +259,7 @@ function App2() {
 
   return (
     <>
-    <div className='mx-auto max-w-2xl px-4'>
+    <div className='mx-auto max-w-lg px-4'>
       <TableSumarize sumToShow={sumToShow} grOrder={grOrder}  />
       <AddItemDialog menu={menu} members={members} />
     </div>

@@ -25,8 +25,8 @@ function TableSumarize({ sumToShow, grOrder }) {
         </TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[200px]">Món</TableHead>
-            <TableHead>Đã chọn</TableHead>
+            <TableHead className="w-[200px]"></TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

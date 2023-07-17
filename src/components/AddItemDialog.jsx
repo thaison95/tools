@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
+  // DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -11,8 +12,17 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
-function AddItemDialog() {
+function AddItemDialog({ menu, members }) {
   return (
     <Dialog>
       <DialogTrigger className="fixed m-auto left-0 right-0 bottom-1">
@@ -32,7 +42,7 @@ function AddItemDialog() {
           </svg>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="max-w-xs rounded-md">
         <DialogHeader>
           <DialogTitle>Chọn món</DialogTitle>
           {/* <DialogDescription>
@@ -41,10 +51,29 @@ function AddItemDialog() {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+          <Select onValueChange={(val) => console.log(val)}>
+            <SelectTrigger className="col-span-4">
+              <SelectValue placeholder="Danh tính" />
+            </SelectTrigger>
+            <SelectContent>
+              {members?.length && members.map(({ name: mem }) => (
+                <SelectItem key={mem} value={mem}>{mem}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          </div>
+
+          <div className="grid grid-cols-4 items-center gap-4">
+          <Select>
+            <SelectTrigger className="col-span-4">
+              <SelectValue placeholder="Uống gì?" />
+            </SelectTrigger>
+            <SelectContent>
+              {menu?.length && menu.map(({ name: item }) => (
+                <SelectItem key={item} value={item}>{item}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           </div>
         </div>
         <DialogFooter>

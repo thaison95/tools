@@ -2,17 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-.max-content {
-    overflow-y: scroll;
-}
-li {
-    width: 50px;
-}
-
-li label {
-    display: inline-block;
-    text-align: center;
-}
-.d-flex{
-	display: flex;
+.SelectScrollButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    background-color: white;
+    color: var(--violet-11);
+    cursor: default;
 }
