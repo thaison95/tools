@@ -13,12 +13,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CircleDollarSign } from "lucide-react";
 
-function TableSumarize({ sumToShow, grOrder }) {
+function TableSumarize({ sumToShow, grOrder, totalItem }) {
   return (
     <div className="rounded-md border mt-4 relative">
       <Table>
         <TableCaption>
-          {new Date().toDateString()} - 12ly - <b>{sumToShow}k</b>
+          {new Date().toDateString()} - {totalItem}ly - <b>{sumToShow}k</b>
           <Button className="absolute right-1 top-1" size="icon">
             <CircleDollarSign />
           </Button>

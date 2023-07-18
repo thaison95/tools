@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -22,9 +22,40 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-function AddItemDialog({ menu, members }) {
+function AddItemDialog({ menu, members, onAddItem }) {
+  const [open, setOpen] = useState(false);
+  const [itemDetail, setItemDetail] = useState({});
+  const [isShowNote, setIsShowNote] = useState(false);
+  const refNote = useRef("");
+  const timestamp = useRef();
+  const onSelectItem = (itemName) => {
+    timestamp.current = Date.now();
+    const item = menu.filter((m) => m.name === itemName)[0];
+    if (itemName?.includes("cafe")) {
+      setIsShowNote(true);
+    } else {
+      setIsShowNote(false);
+    }
+    setItemDetail((pre) => ({ ...pre, ...item, status: false }));
+  };
+  const validateSelectItem = () => {
+    if (Date.now() - timestamp.current < 50) return; // because propagation
+    if (!itemDetail.belong || !itemDetail.name) return;
+    setOpen(false);
+    if (refNote.current) {
+      onAddItem({
+        ...itemDetail,
+        name: itemDetail.name + " (" + refNote.current + ")",
+      });
+    } else {
+      onAddItem(itemDetail);
+    }
+    // reset note
+    setIsShowNote(false);
+    refNote.current = "";
+  };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="fixed m-auto left-0 right-0 bottom-1">
         <Button variant="outline" size="icon">
           <svg
@@ -51,7 +82,7 @@ function AddItemDialog({ menu, members }) {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-          <Select onValueChange={(val) => console.log(val)}>
+          <Select onValueChange={(val) => {timestamp.current = Date.now();setItemDetail((pre) => ({ ...pre, belong: val }))}}>
             <SelectTrigger className="col-span-4">
               <SelectValue placeholder="Danh tính" />
             </SelectTrigger>
@@ -64,7 +95,7 @@ function AddItemDialog({ menu, members }) {
           </div>
 
           <div className="grid grid-cols-4 items-center gap-4">
-          <Select>
+          <Select onValueChange={(val) => onSelectItem(val)}>
             <SelectTrigger className="col-span-4">
               <SelectValue placeholder="Uống gì?" />
             </SelectTrigger>
@@ -75,9 +106,20 @@ function AddItemDialog({ menu, members }) {
             </SelectContent>
           </Select>
           </div>
+
+          <div className="grid grid-cols-4 items-center gap-4">
+            {isShowNote && (
+              <Input
+                type="text"
+                onChange={(e) => (refNote.current = e?.target?.value)}
+                placeholder="Note"
+                className="col-span-4"
+              />
+            )}
+          </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Chốt!</Button>
+          <Button type="submit" onClick={validateSelectItem}>Chốt!</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
