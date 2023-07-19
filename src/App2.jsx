@@ -25,8 +25,6 @@ function App2() {
 
     setOrderInArr(orders);
     setGrOrder(grOrder);
-
-    console.log({orders, grOrder})
   };
   useEffect(() => {
     fetchData();
