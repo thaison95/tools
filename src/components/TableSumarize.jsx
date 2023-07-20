@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import applyDiscount from "@/utils/applyDiscount";
 import AdminPanel from "./AdminPanel";
 
-function TableSumarize({ total, grOrder, orders }) {
+function TableSumarize({ total, grOrder, orders, fetchOrders }) {
   return (
     <div className="rounded-md border mt-4 relative">
       <Table>
@@ -28,7 +28,7 @@ function TableSumarize({ total, grOrder, orders }) {
           <span>{orders.length} ly</span> -{" "}
           <b>{new Intl.NumberFormat().format(applyDiscount(total))} &#273;</b>
           <div className="absolute right-1 top-1">
-            <AdminPanel orders={orders}/>
+            <AdminPanel orders={orders} fetchOrders={fetchOrders} />
           </div>
         </TableCaption>
         <TableHeader>

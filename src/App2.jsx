@@ -44,6 +44,7 @@ function App2() {
         total={total}
         grOrder={grOrder}
         orders={orderInArr}
+        fetchOrders={fetchOrders}
       />
       <AddItemDialog menu={menu} members={members} onAddItem={onAddItem} />
     </div>
