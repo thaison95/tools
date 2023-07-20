@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import TableSumarize from '@/components/TableSumarize'
-import AddItemDialog from '@/components/AddItemDialog'
+import React, { useEffect, useState } from "react";
+import TableSumarize from "@/components/TableSumarize";
+import AddItemDialog from "@/components/AddItemDialog";
 import {
   getMenu,
   getOrders,
   passioMembers,
   addItem,
-  updatePaidStatus,
 } from "./utils/api";
 
 function App2() {
@@ -23,7 +22,7 @@ function App2() {
 
   const fetchOrders = async () => {
     const { orders, grOrder } = await getOrders();
-    
+
     setOrderInArr(orders);
     setGrOrder(grOrder);
   };
@@ -37,18 +36,19 @@ function App2() {
     fetchOrders();
   };
 
-  const sum = orderInArr.reduce((rs, cur) => (rs += cur.price), 0);
-  const sumToShow = sum ? (sum - sum * 0.1) / 1000 : 0;
+  const total = orderInArr.reduce((rs, cur) => (rs += cur.price), 0);
 
   return (
-    <>
-    <div className='mx-auto max-w-lg px-4'>
-      <TableSumarize sumToShow={sumToShow} grOrder={grOrder} totalItem={orderInArr.length}  />
+    <div className="mx-auto max-w-lg px-4">
+      <TableSumarize
+        total={total}
+        grOrder={grOrder}
+        orders={orderInArr}
+        fetchOrders={fetchOrders}
+      />
       <AddItemDialog menu={menu} members={members} onAddItem={onAddItem} />
     </div>
-    
-    </>
-  )
+  );
 }
 
-export default App2
+export default App2;
