@@ -56,12 +56,16 @@ const AdminPanel = ({ orders, fetchOrders }) => {
           <CircleDollarSign />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] h-[550px]">
+      <DialogContent className="sm:max-w-[425px] h-auto">
         {!isUnlocked && (
           <>
             <DialogHeader>
-              <DialogTitle className="text-center">Từ từ đã bạn hiền</DialogTitle>
-              <DialogDescription className="text-center">Vui lòng đọc password</DialogDescription>
+              <DialogTitle className="text-center">
+                Từ từ đã bạn hiền
+              </DialogTitle>
+              <DialogDescription className="text-center">
+                Vui lòng đọc password
+              </DialogDescription>
             </DialogHeader>
 
             <Numpads numbers={numbers} onClick={onClickNumPad} />
@@ -76,7 +80,7 @@ const AdminPanel = ({ orders, fetchOrders }) => {
               </DialogTitle>
             </DialogHeader>
 
-            <div className="ml-auto mr-auto flex gap-5 flex-col">
+            <div className="ml-auto mr-auto flex gap-5 flex-col justify-start">
               {orders
                 .sort((a, b) => a.belong.localeCompare(b.belong))
                 .map((order) => (
