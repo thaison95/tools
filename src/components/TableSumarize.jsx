@@ -5,19 +5,18 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import applyDiscount from "@/utils/applyDiscount";
 import AdminPanel from "./AdminPanel";
+import Voucher from "./Voucher";
 
 function TableSumarize({ total, grOrder, orders, fetchOrders }) {
   return (
     <div className="rounded-md border mt-4 relative">
       <Table>
-        <TableCaption>
+        <TableCaption className='border-b pb-4'>
           {new Date().toLocaleDateString("vi-VN", {
             weekday: "long",
             year: "numeric",
@@ -27,16 +26,14 @@ function TableSumarize({ total, grOrder, orders, fetchOrders }) {
           <br />
           <span>{orders.length} ly</span> -{" "}
           <b>{new Intl.NumberFormat().format(applyDiscount(total))} &#273;</b>
+          <br />
+          <div className="mt-2">
+            <Voucher />
+          </div>
           <div className="absolute right-1 top-1">
             <AdminPanel orders={orders} fetchOrders={fetchOrders} />
           </div>
         </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="max-w-[150px]"></TableHead>
-            <TableHead className="w-[40px]"></TableHead>
-          </TableRow>
-        </TableHeader>
         <TableBody>
           {Object.keys(grOrder)
             .sort((a, b) => a.localeCompare(b))
