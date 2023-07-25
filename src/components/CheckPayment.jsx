@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Loader2 } from 'lucide-react'
 
-const CheckPayment = ({ order, onClick }) => {
+const CheckPayment = ({ order, onClick, disabled }) => {
   const [loading, setLoading] = useState(false);
 
   const self_onClick = async () => {
@@ -23,7 +23,7 @@ const CheckPayment = ({ order, onClick }) => {
         onClick={() => self_onClick()}
         className="p-2 h-8"
         variant={order.status ? "success" : "error"}
-        disabled={loading || order.status}
+        disabled={loading || order.status || disabled}
       >
         {loading && <Loader2 className="mr-1 h-4 w-4 animate-spin" />}
         {order.status ? "Đã nộp" : "Chưa nộp"}
