@@ -19,7 +19,7 @@ const Voucher = () => {
           <DialogTitle className="text-center">Voucher</DialogTitle>
         </DialogHeader>
 
-        <img src="/voucher.jpg" alt="9001184329" width="400" />
+        <img src="/voucher.webp" alt="9001184329" width="400" />
       </DialogContent>
     </Dialog>
   );
