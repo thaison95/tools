@@ -36,7 +36,6 @@ export const getOrders = async () => {
   const docRef = doc(db, COLLECTIONS.PASSIO_ORDERS, getTodayStr());
   const docSnapRes = await getDoc(docRef);
   const docSnap = omit(docSnapRes.data(), 'path');
-  console.log({docSnap})
   const ordersInArr = Object.entries(docSnap).map(item => item[1]);
 
   return {grOrder: groupBy(docSnap, 'name'), orders: ordersInArr};

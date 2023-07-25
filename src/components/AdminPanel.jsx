@@ -22,7 +22,8 @@ const hashed_key =
 
 const AdminPanel = ({ orders, fetchOrders }) => {
   const [key, setKey] = useState(localStorage.getItem("key") ?? "");
-  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isUnlocked, setIsUnlocked] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const onClickNumPad = (number) => {
     setKey(key + number);
@@ -49,6 +50,18 @@ const AdminPanel = ({ orders, fetchOrders }) => {
     await fetchOrders();
   };
 
+  const onPaidAll = async () => {
+    try {
+      setLoading(true);
+      await Promise.all(orders.map((order) => updatePaidStatus(order.belong)));
+      await fetchOrders();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -80,7 +93,15 @@ const AdminPanel = ({ orders, fetchOrders }) => {
               </DialogTitle>
             </DialogHeader>
 
-            <div className="ml-auto mr-auto flex gap-5 flex-col justify-start">
+            <Button
+              onClick={onPaidAll}
+              variant="success"
+              className="w-[250px] ml-auto mr-auto"
+            >
+              Tất cả đã nộp
+            </Button>
+
+            <div className="ml-auto mr-auto flex gap-5 flex-col justify-start overflow-auto h-[400px] relative">
               {orders
                 .filter((order) => !order.status)
                 .sort((a, b) => a.belong.localeCompare(b.belong))
@@ -89,6 +110,7 @@ const AdminPanel = ({ orders, fetchOrders }) => {
                     key={order.belong}
                     order={order}
                     onClick={onCheckedChange}
+                    disabled={loading}
                   />
                 ))}
             </div>
