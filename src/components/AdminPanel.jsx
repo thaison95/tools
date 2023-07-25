@@ -56,7 +56,7 @@ const AdminPanel = ({ orders, fetchOrders }) => {
           <CircleDollarSign />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] h-auto">
+      <DialogContent className="sm:max-w-[425px] h-auto overflow-auto">
         {!isUnlocked && (
           <>
             <DialogHeader>
@@ -82,6 +82,7 @@ const AdminPanel = ({ orders, fetchOrders }) => {
 
             <div className="ml-auto mr-auto flex gap-5 flex-col justify-start">
               {orders
+                .filter((order) => !order.status)
                 .sort((a, b) => a.belong.localeCompare(b.belong))
                 .map((order) => (
                   <CheckPayment
