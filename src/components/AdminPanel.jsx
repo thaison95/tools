@@ -22,7 +22,7 @@ const hashed_key =
 
 const AdminPanel = ({ orders, fetchOrders }) => {
   const [key, setKey] = useState(localStorage.getItem("key") ?? "");
-  const [isUnlocked, setIsUnlocked] = useState(true);
+  const [isUnlocked, setIsUnlocked] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const onClickNumPad = (number) => {
@@ -61,7 +61,7 @@ const AdminPanel = ({ orders, fetchOrders }) => {
       setLoading(false);
     }
   };
-  
+
   return (
     <Dialog>
       <DialogTrigger asChild>
