@@ -51,7 +51,7 @@ function TableSumarize({
         </TableCaption>
 
         {/* id and style for screenshot */}
-        <TableBody id="order-list" className='bg-white'>
+        <TableBody id="order-list" className="bg-white">
           {Object.keys(grOrder)
             .sort((a, b) => a.localeCompare(b))
             .map((key) => (
@@ -83,6 +83,12 @@ function TableSumarize({
                 </TableCell>
               </TableRow>
             ))}
+
+          {Object.keys(grOrder).length === 0 && (
+            <TableRow className="h-[400px] grid place-items-center text-slate-400">
+              <TableCell colSpan={3}>Hãy là người mở hàng</TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </div>
