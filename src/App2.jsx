@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import TableSumarize from "@/components/TableSumarize";
 import AddItemDialog from "@/components/AddItemDialog";
-import {
-  getMenu,
-  getOrders,
-  passioMembers,
-  addItem,
-} from "./utils/api";
+import { getMenu, getOrders, passioMembers, addItem } from "./utils/api";
 
 function App2() {
   const [members, setMembers] = useState(null);
   const [menu, setMenu] = useState([]);
   const [grOrder, setGrOrder] = useState({});
   const [orderInArr, setOrderInArr] = useState([]);
+  const [fetchingOrders, setFetchingOrders] = useState(false);
 
   const fetchData = async () => {
     const [members, menu] = await Promise.all([passioMembers(), getMenu()]);
@@ -21,10 +17,17 @@ function App2() {
   };
 
   const fetchOrders = async () => {
-    const { orders, grOrder } = await getOrders();
+    try {
+      setFetchingOrders(true);
+      const { orders, grOrder } = await getOrders();
 
-    setOrderInArr(orders);
-    setGrOrder(grOrder);
+      setOrderInArr(orders);
+      setGrOrder(grOrder);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setFetchingOrders(false);
+    }
   };
   useEffect(() => {
     fetchData();
@@ -45,6 +48,7 @@ function App2() {
         grOrder={grOrder}
         orders={orderInArr}
         fetchOrders={fetchOrders}
+        fetchingOrders={fetchingOrders}
       />
       <AddItemDialog menu={menu} members={members} onAddItem={onAddItem} />
     </div>
