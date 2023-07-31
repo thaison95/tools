@@ -9,14 +9,23 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import applyDiscount from "@/utils/applyDiscount";
-import AdminPanel from "./AdminPanel";
 import Voucher from "./Voucher";
+import RefreshOrders from "./RefreshOrders";
+import Spin from "./Spin";
+import ActionMenu from "./ActionMenu";
 
-function TableSumarize({ total, grOrder, orders, fetchOrders }) {
+function TableSumarize({
+  total,
+  grOrder,
+  orders,
+  fetchOrders,
+  fetchingOrders,
+}) {
   return (
     <div className="rounded-md border mt-4 relative">
+      <Spin spinning={fetchingOrders} />
       <Table>
-        <TableCaption className='border-b pb-4'>
+        <TableCaption className="relative border-b pb-4 mt-0 pt-4">
           {new Date().toLocaleDateString("vi-VN", {
             weekday: "long",
             year: "numeric",
@@ -31,10 +40,18 @@ function TableSumarize({ total, grOrder, orders, fetchOrders }) {
             <Voucher />
           </div>
           <div className="absolute right-1 top-1">
-            <AdminPanel orders={orders} fetchOrders={fetchOrders} />
+            <ActionMenu orders={orders} fetchOrders={fetchOrders} />
+          </div>
+          <div className="absolute bottom-1 right-1">
+            <RefreshOrders
+              fetchOrders={fetchOrders}
+              fetchingOrders={fetchingOrders}
+            />
           </div>
         </TableCaption>
-        <TableBody>
+
+        {/* id and style for screenshot */}
+        <TableBody id="order-list" className="bg-white">
           {Object.keys(grOrder)
             .sort((a, b) => a.localeCompare(b))
             .map((key) => (
@@ -66,6 +83,12 @@ function TableSumarize({ total, grOrder, orders, fetchOrders }) {
                 </TableCell>
               </TableRow>
             ))}
+
+          {Object.keys(grOrder).length === 0 && (
+            <TableRow className="h-[400px] grid place-items-center text-slate-400">
+              <TableCell colSpan={3}>Hãy là người mở hàng</TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </div>
