@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import TableSumarize from "@/components/TableSumarize";
 import AddItemDialog from "@/components/AddItemDialog";
 import { getMenu, getOrders, passioMembers, addItem } from "./utils/api";
+import usePreloadAssets from "./hooks/usePreloadAssets";
+
+const assetUrls = ['/voucher.webp'];
 
 function App2() {
   const [members, setMembers] = useState(null);
@@ -29,15 +32,18 @@ function App2() {
       setFetchingOrders(false);
     }
   };
-  useEffect(() => {
-    fetchData();
-    fetchOrders();
-  }, []);
 
   const onAddItem = async (itemDetail) => {
     await addItem(itemDetail);
     fetchOrders();
   };
+
+  useEffect(() => {
+    fetchData();
+    fetchOrders();
+  }, []);
+
+  usePreloadAssets(assetUrls);
 
   const total = orderInArr.reduce((rs, cur) => (rs += cur.price), 0);
 
