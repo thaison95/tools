@@ -3,6 +3,7 @@ import TableSumarize from "@/components/TableSumarize";
 import AddItemDialog from "@/components/AddItemDialog";
 import { getMenu, getOrders, passioMembers, addItem } from "./utils/api";
 import usePreloadAssets from "./hooks/usePreloadAssets";
+import InstallApp from "./components/InstallApp";
 
 const assetUrls = ['/voucher.webp'];
 
@@ -57,6 +58,8 @@ function App2() {
         fetchingOrders={fetchingOrders}
       />
       <AddItemDialog menu={menu} members={members} onAddItem={onAddItem} />
+
+      <InstallApp />
     </div>
   );
 }
