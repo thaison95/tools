@@ -1,0 +1,23 @@
+{
+    "short_name": "Passio Orders",
+    "name": "TS Passio Orders",
+    "icons": [
+      {
+        "src": "/passio_512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      },
+      {
+        "src": "/passio_192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      }
+    ],
+    "id": "ts-passio-orders",
+    "start_url": "/",
+    "background_color": "#a6cc3a",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#a6cc3a",
+    "description": "Order passio drink"
+  }
