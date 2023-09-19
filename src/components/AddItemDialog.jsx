@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,35 +22,24 @@ import {
 function AddItemDialog({ menu, members, onAddItem }) {
   const [open, setOpen] = useState(false);
   const [itemDetail, setItemDetail] = useState({});
-  const [isShowNote, setIsShowNote] = useState(false);
-  const refNote = useRef("");
-  const timestamp = useRef();
-  const onSelectItem = (itemName) => {
-    timestamp.current = Date.now();
-    const item = menu.filter((m) => m.name === itemName)[0];
-    if (itemName?.includes("cafe")) {
-      setIsShowNote(true);
-    } else {
-      setIsShowNote(false);
-    }
+  const [note, setNote] = useState("");
+  const onSelectItem = (item) => {
     setItemDetail((pre) => ({ ...pre, ...item, status: false }));
   };
+
   const validateSelectItem = () => {
-    if (Date.now() - timestamp.current < 50) return; // because propagation
-    if (!itemDetail.belong || !itemDetail.name) return;
-    setOpen(false);
-    if (refNote.current) {
+    if (note) {
       onAddItem({
         ...itemDetail,
-        name: itemDetail.name + " (" + refNote.current + ")",
+        name: itemDetail.name + " (" + note + ")",
       });
     } else {
       onAddItem(itemDetail);
     }
-    // reset note
-    setIsShowNote(false);
-    refNote.current = "";
+
+    setOpen(false);
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="fixed m-auto left-0 right-0 bottom-1" asChild>
@@ -78,9 +67,9 @@ function AddItemDialog({ menu, members, onAddItem }) {
           <div className="grid grid-cols-4 items-center gap-4">
             <Select
               onValueChange={(val) => {
-                timestamp.current = Date.now();
                 setItemDetail((pre) => ({ ...pre, belong: val }));
               }}
+              value={itemDetail.belong}
             >
               <SelectTrigger className="col-span-4">
                 <SelectValue placeholder="Danh tính" />
@@ -101,28 +90,35 @@ function AddItemDialog({ menu, members, onAddItem }) {
                 <SelectValue placeholder="Uống gì?" />
               </SelectTrigger>
               <SelectContent>
-                {menu?.map(({ name: item }) => (
-                  <SelectItem key={item} value={item}>
-                    {item}
+                {menu.filter(item => item.is_active).map((item) => (
+                  <SelectItem key={item.name} value={item}>
+                    {item.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
 
-          {isShowNote && (
+          {itemDetail.can_add_note && (
             <div className="grid grid-cols-4 items-center gap-4">
               <Input
                 type="text"
-                onChange={(e) => (refNote.current = e?.target?.value)}
+                onChange={(e) => {
+                  setNote(e.target.value);
+                }}
                 placeholder="Note"
                 className="col-span-4"
+                value={note}
               />
             </div>
           )}
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={validateSelectItem}>
+          <Button
+            type="submit"
+            onClick={validateSelectItem}
+            disabled={!itemDetail.belong || !itemDetail.name}
+          >
             Chốt!
           </Button>
         </DialogFooter>
