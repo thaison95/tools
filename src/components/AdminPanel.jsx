@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { CircleDollarSign } from "lucide-react";
+import { UserCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -12,9 +12,12 @@ import {
 } from "./ui/dialog";
 import shuffle from "@/utils/shuffle";
 import { sha256 } from "@/utils/encrypt";
-import { login, updatePaidStatus } from "../utils/api";
+import { login } from "../utils/api";
 import Numpads from "./Numpads";
-import CheckPayment from "./CheckPayment";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import PaymentManagement from "./PaymentManagement";
+import MenuManagement from "./MenuManagement";
+import HistoryManagement from "./HistoryManagement";
 
 const numbers = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 const hashed_key =
@@ -23,7 +26,6 @@ const hashed_key =
 const AdminPanel = ({ orders, fetchOrders }) => {
   const [key, setKey] = useState(localStorage.getItem("key") ?? "");
   const [isUnlocked, setIsUnlocked] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const onClickNumPad = (number) => {
     setKey(key + number);
@@ -45,31 +47,14 @@ const AdminPanel = ({ orders, fetchOrders }) => {
     }
   }, [key, loginFirebase]);
 
-  const onCheckedChange = async (order) => {
-    await updatePaidStatus(order.belong);
-    await fetchOrders();
-  };
-
-  const onPaidAll = async () => {
-    try {
-      setLoading(true);
-      await Promise.all(orders.map((order) => updatePaidStatus(order.belong)));
-      await fetchOrders();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button size="icon">
-          <CircleDollarSign />
+          <UserCircle />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] h-auto overflow-auto">
+      <DialogContent className="sm:max-w-[425px] overflow-auto">
         {!isUnlocked && (
           <>
             <DialogHeader>
@@ -89,31 +74,29 @@ const AdminPanel = ({ orders, fetchOrders }) => {
           <>
             <DialogHeader>
               <DialogTitle className="text-center">
-                Đoán xem ai chưa trả nợ
+                Admin in your area
               </DialogTitle>
             </DialogHeader>
 
-            <Button
-              onClick={onPaidAll}
-              variant="success"
-              className="w-[250px] ml-auto mr-auto"
+            <Tabs
+              defaultValue="payment"
+              className="sm:max-w-[425px] h-auto overflow-auto w-full flex flex-col"
             >
-              Tất cả đã nộp
-            </Button>
-
-            <div className="ml-auto mr-auto flex gap-5 flex-col justify-start overflow-auto h-[400px] relative">
-              {orders
-                .filter((order) => !order.status)
-                .sort((a, b) => a.belong.localeCompare(b.belong))
-                .map((order) => (
-                  <CheckPayment
-                    key={order.belong}
-                    order={order}
-                    onClick={onCheckedChange}
-                    disabled={loading}
-                  />
-                ))}
-            </div>
+              <TabsList className="ml-auto mr-auto">
+                <TabsTrigger value="payment">Tài chánh</TabsTrigger>
+                <TabsTrigger value="menu">Thực đơn</TabsTrigger>
+                <TabsTrigger value="history">Siết nợ</TabsTrigger>
+              </TabsList>
+              <TabsContent value="payment" className="mt-3">
+                <PaymentManagement orders={orders} fetchOrders={fetchOrders} />
+              </TabsContent>
+              <TabsContent value="menu" className="mt-3">
+                <MenuManagement />
+              </TabsContent>
+              <TabsContent value="history" className="mt-3">
+                <HistoryManagement />
+              </TabsContent>
+            </Tabs>
           </>
         )}
       </DialogContent>

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import TableSumarize from "@/components/TableSumarize";
+import OrdersTable from "@/components/OrdersTable";
 import AddItemDialog from "@/components/AddItemDialog";
 import { getMenu, getOrders, passioMembers, addItem } from "./utils/api";
 import usePreloadAssets from "./hooks/usePreloadAssets";
 import InstallApp from "./components/InstallApp";
 
-const assetUrls = ['/voucher.webp'];
+const assetUrls = ["/voucher.webp"];
 
 function App2() {
   const [members, setMembers] = useState(null);
@@ -50,7 +50,7 @@ function App2() {
 
   return (
     <div className="mx-auto max-w-lg px-4">
-      <TableSumarize
+      <OrdersTable
         total={total}
         grOrder={grOrder}
         orders={orderInArr}

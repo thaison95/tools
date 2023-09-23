@@ -73,7 +73,7 @@ function AddItemDialog({ menu, members, onAddItem }) {
           </svg>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-md rounded-md">
+      <DialogContent className="max-w-sm rounded-md">
         <DialogHeader>
           <DialogTitle>Chọn món</DialogTitle>
         </DialogHeader>
@@ -110,9 +110,9 @@ function AddItemDialog({ menu, members, onAddItem }) {
                     <SelectItem
                       key={item.name}
                       value={item}
-                      className="cursor-pointer"
+                      className="cursor-pointer w-full"
                     >
-                      <DrinkItem item={item} />
+                      <DrinkItem item={item} className="w-[17rem]" />
                     </SelectItem>
                   ))}
               </SelectContent>
@@ -127,7 +127,7 @@ function AddItemDialog({ menu, members, onAddItem }) {
                   setNote(e.target.value);
                 }}
                 placeholder="Note"
-                className="col-span-4"
+                className="col-span-4 h-[60px]"
                 value={note}
               />
             </div>
