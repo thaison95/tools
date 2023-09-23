@@ -1,10 +1,16 @@
+import { cn } from "@/lib/utils";
 import applyDiscount from "@/utils/applyDiscount";
 import React from "react";
 
-const DrinkItem = ({ item }) => {
+const DrinkItem = ({ item, className }) => {
   return (
-    <div className="h-[50px] flex flex-row items-center gap-2 w-[300px] mr-2">
-      <img src={item.image} width="40" height="40" />
+    <div
+      className={cn(
+        "h-[50px] flex flex-row items-center gap-1 mr-2",
+        className
+      )}
+    >
+      <img src={item.image} width="35" height="35" />
       <span>{item.name}</span>
 
       <div className="ml-auto flex flex-col gap-1">

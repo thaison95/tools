@@ -14,13 +14,7 @@ import RefreshOrders from "./RefreshOrders";
 import Spin from "./Spin";
 import ActionMenu from "./ActionMenu";
 
-function TableSumarize({
-  total,
-  grOrder,
-  orders,
-  fetchOrders,
-  fetchingOrders,
-}) {
+function OrdersTable({ total, grOrder, orders, fetchOrders, fetchingOrders }) {
   return (
     <div className="rounded-md border mt-4 relative">
       <Spin spinning={fetchingOrders} />
@@ -49,6 +43,12 @@ function TableSumarize({
             />
           </div>
         </TableCaption>
+
+        <colgroup>
+          <col className="w-[175px]" />
+          <col className="w-[20px]" />
+          <col />
+        </colgroup>
 
         {/* id and style for screenshot */}
         <TableBody id="order-list" className="bg-white">
@@ -85,8 +85,10 @@ function TableSumarize({
             ))}
 
           {Object.keys(grOrder).length === 0 && (
-            <TableRow className="h-[400px] grid place-items-center text-slate-400">
-              <TableCell colSpan={3}>Hãy là người mở hàng</TableCell>
+            <TableRow className="h-[400px] text-slate-400">
+              <TableCell className="text-center" colSpan={3}>
+                Hãy là người mở hàng
+              </TableCell>
             </TableRow>
           )}
         </TableBody>
@@ -95,4 +97,4 @@ function TableSumarize({
   );
 }
 
-export default TableSumarize;
+export default OrdersTable;
