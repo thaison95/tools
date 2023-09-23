@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import DrinkItem from "./DrinkItem";
 
 function AddItemDialog({ menu, members, onAddItem }) {
   const [open, setOpen] = useState(false);
@@ -27,21 +28,31 @@ function AddItemDialog({ menu, members, onAddItem }) {
     setItemDetail((pre) => ({ ...pre, ...item, status: false }));
   };
 
+  const onOpenChange = (opened) => {
+    setOpen(opened);
+
+    if (!opened) {
+      setItemDetail({});
+    }
+  };
+
   const validateSelectItem = () => {
+    // eslint-disable-next-line no-unused-vars
+    const { image, ...item } = itemDetail;
     if (note) {
       onAddItem({
-        ...itemDetail,
-        name: itemDetail.name + " (" + note + ")",
+        ...item,
+        name: item.name + " (" + note + ")",
       });
     } else {
-      onAddItem(itemDetail);
+      onAddItem(item);
     }
 
     setOpen(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger className="fixed m-auto left-0 right-0 bottom-1" asChild>
         <Button size="icon" className="bg-transparent">
           <svg
@@ -59,7 +70,7 @@ function AddItemDialog({ menu, members, onAddItem }) {
           </svg>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-xs rounded-md">
+      <DialogContent className="max-w-md rounded-md">
         <DialogHeader>
           <DialogTitle>Chọn món</DialogTitle>
         </DialogHeader>
@@ -71,12 +82,12 @@ function AddItemDialog({ menu, members, onAddItem }) {
               }}
               value={itemDetail.belong}
             >
-              <SelectTrigger className="col-span-4">
+              <SelectTrigger className="col-span-4 h-[60px]">
                 <SelectValue placeholder="Danh tính" />
               </SelectTrigger>
               <SelectContent>
                 {members?.map(({ name: mem }) => (
-                  <SelectItem key={mem} value={mem}>
+                  <SelectItem key={mem} value={mem} className="cursor-pointer">
                     {mem}
                   </SelectItem>
                 ))}
@@ -86,15 +97,21 @@ function AddItemDialog({ menu, members, onAddItem }) {
 
           <div className="grid grid-cols-4 items-center gap-4">
             <Select onValueChange={(val) => onSelectItem(val)}>
-              <SelectTrigger className="col-span-4">
+              <SelectTrigger className="col-span-4 h-[60px]">
                 <SelectValue placeholder="Uống gì?" />
               </SelectTrigger>
               <SelectContent>
-                {menu.filter(item => item.is_active).map((item) => (
-                  <SelectItem key={item.name} value={item}>
-                    {item.name}
-                  </SelectItem>
-                ))}
+                {menu
+                  .filter((item) => item.is_active)
+                  .map((item) => (
+                    <SelectItem
+                      key={item.name}
+                      value={item}
+                      className="cursor-pointer"
+                    >
+                      <DrinkItem item={item} />
+                    </SelectItem>
+                  ))}
               </SelectContent>
             </Select>
           </div>
