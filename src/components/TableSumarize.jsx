@@ -25,7 +25,7 @@ function TableSumarize({
     <div className="rounded-md border mt-4 relative">
       <Spin spinning={fetchingOrders} />
       <Table>
-        <TableCaption className="relative border-b pb-4 mt-0 pt-4">
+        <TableCaption className="relative border-b pb-4 mt-0 pt-4 caption-top">
           {new Date().toLocaleDateString("vi-VN", {
             weekday: "long",
             year: "numeric",
