@@ -53,7 +53,10 @@ function AddItemDialog({ menu, members, onAddItem }) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger className="fixed m-auto left-0 right-0 bottom-1" asChild>
+      <DialogTrigger
+        className="fixed m-auto left-0 right-0 bottom-1 pb-safe"
+        asChild
+      >
         <Button size="icon" className="bg-transparent">
           <svg
             xmlns="http://www.w3.org/2000/svg"
