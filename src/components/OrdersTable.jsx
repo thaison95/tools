@@ -5,8 +5,6 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -51,14 +49,6 @@ function OrdersTable({ total, grOrder, orders, fetchOrders, fetchingOrders }) {
           <col className="w-[20px]" />
           <col />
         </colgroup>
-
-        <TableHeader>
-          <TableRow>
-            <TableHead>Món</TableHead>
-            <TableHead>SL</TableHead>
-            <TableHead>Tên</TableHead>
-          </TableRow>
-        </TableHeader>
 
         {/* id and style for screenshot */}
         <TableBody id="order-list" className="bg-white">
