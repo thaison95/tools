@@ -33,6 +33,7 @@ function AddItemDialog({ menu, members, onAddItem }) {
 
     if (!opened) {
       setItemDetail({});
+      setNote('')
     }
   };
 
