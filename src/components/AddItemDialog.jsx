@@ -33,6 +33,7 @@ function AddItemDialog({ menu, members, onAddItem }) {
 
     if (!opened) {
       setItemDetail({});
+      setNote("");
     }
   };
 
@@ -49,6 +50,8 @@ function AddItemDialog({ menu, members, onAddItem }) {
     }
 
     setOpen(false);
+    setItemDetail({});
+    setNote("");
   };
 
   return (
