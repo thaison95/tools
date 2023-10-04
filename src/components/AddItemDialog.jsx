@@ -19,13 +19,30 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import DrinkItem from "./DrinkItem";
+import DrinkSizeItem from "./DrinkSizeItem";
+import { SIZE } from "@/constants";
 
 function AddItemDialog({ menu, members, onAddItem }) {
   const [open, setOpen] = useState(false);
   const [itemDetail, setItemDetail] = useState({});
-  const [note, setNote] = useState("");
   const onSelectItem = (item) => {
-    setItemDetail((pre) => ({ ...pre, ...item, status: false }));
+    setItemDetail((pre) => ({
+      ...pre,
+      can_add_note: item.can_add_note,
+      available_size: item.available_size,
+      name: item.name,
+      price: item.price,
+      size: SIZE.S,
+      note: "",
+    }));
+  };
+
+  const onSelectSize = (size) => {
+    setItemDetail((pre) => ({ ...pre, size }));
+  };
+
+  const onChangeNote = (note) => {
+    setItemDetail((pre) => ({ ...pre, note }));
   };
 
   const onOpenChange = (opened) => {
@@ -33,25 +50,24 @@ function AddItemDialog({ menu, members, onAddItem }) {
 
     if (!opened) {
       setItemDetail({});
-      setNote("");
     }
   };
 
   const validateSelectItem = () => {
-    // eslint-disable-next-line no-unused-vars
-    const { image, ...item } = itemDetail;
-    if (note) {
-      onAddItem({
-        ...item,
-        name: item.name + " (" + note + ")",
-      });
-    } else {
-      onAddItem(item);
-    }
+    const order = {
+      name: itemDetail.name,
+      price:
+        itemDetail.price + itemDetail.available_size?.[itemDetail.size] ?? 0,
+      size: itemDetail.size,
+      note: itemDetail.note,
+      belong: itemDetail.belong,
+      status: false,
+    };
 
-    setOpen(false);
+    onAddItem(order);
+
     setItemDetail({});
-    setNote("");
+    setOpen(false);
   };
 
   return (
@@ -122,16 +138,46 @@ function AddItemDialog({ menu, members, onAddItem }) {
             </Select>
           </div>
 
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Select
+              onValueChange={(val) => onSelectSize(val)}
+              disabled={!itemDetail.available_size}
+              defaultValue={SIZE.S}
+            >
+              <SelectTrigger className="col-span-4 h-[60px]">
+                <SelectValue placeholder="Size gì?" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.entries(itemDetail.available_size ?? { S: 0 })
+                  .sort((a, b) => a[1] - b[1])
+                  .map(([size, sizePrice]) => (
+                    <SelectItem
+                      key={size}
+                      value={size}
+                      className="cursor-pointer w-full"
+                    >
+                      <DrinkSizeItem
+                        key={size}
+                        size={size}
+                        additionalPrice={sizePrice}
+                        className="w-[17rem]"
+                      />
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
+
           {itemDetail.can_add_note && (
             <div className="grid grid-cols-4 items-center gap-4">
               <Input
                 type="text"
                 onChange={(e) => {
-                  setNote(e.target.value);
+                  onChangeNote(e.target.value);
                 }}
                 placeholder="Note"
                 className="col-span-4 h-[60px]"
-                value={note}
+                value={itemDetail.note}
               />
             </div>
           )}

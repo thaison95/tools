@@ -13,6 +13,7 @@ import Voucher from "./Voucher";
 import RefreshOrders from "./RefreshOrders";
 import Spin from "./Spin";
 import ActionMenu from "./ActionMenu";
+import { SIZE } from "@/constants";
 
 function OrdersTable({ total, grOrder, orders, fetchOrders, fetchingOrders }) {
   return (
@@ -54,35 +55,43 @@ function OrdersTable({ total, grOrder, orders, fetchOrders, fetchingOrders }) {
         <TableBody id="order-list" className="bg-white">
           {Object.keys(grOrder)
             .sort((a, b) => a.localeCompare(b))
-            .map((key) => (
-              <TableRow key={key}>
-                <TableCell>
-                  <b className="break-all">{key}</b>
-                  <br />
-                  <span className="text-muted-foreground">
-                    {new Intl.NumberFormat().format(
-                      applyDiscount(grOrder[key][0].price)
-                    )}{" "}
-                    &#273;
-                  </span>
-                </TableCell>
-                <TableCell className="text-left">
-                  {grOrder[key].length}
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-1 flex-wrap">
-                    {grOrder[key]?.map((mem) => (
-                      <Badge
-                        key={mem.belong}
-                        variant={mem.status ? "success" : "destructive"}
-                      >
-                        {mem.belong}
-                      </Badge>
-                    ))}
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+            .map((key) => {
+              const order = grOrder[key];
+              const drink = order[0].name;
+              const note = order[0].note ?? "";
+              const size = order[0].size ?? SIZE.S;
+              const price = order[0].price ?? 0;
+
+              return (
+                <TableRow key={key}>
+                  <TableCell>
+                    <b className="break-all">
+                      {drink}
+                      {note ? ` (${note})` : ""}
+                    </b>
+                    <br />
+                    <span className="text-muted-foreground">
+                      {size}{' - '}
+                      {new Intl.NumberFormat().format(applyDiscount(price))}{" "}
+                      &#273;
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-left">{order.length}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1 flex-wrap">
+                      {order?.map((mem) => (
+                        <Badge
+                          key={mem.belong}
+                          variant={mem.status ? "success" : "destructive"}
+                        >
+                          {mem.belong}
+                        </Badge>
+                      ))}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
 
           {Object.keys(grOrder).length === 0 && (
             <TableRow className="h-[400px] text-slate-400">
