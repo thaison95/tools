@@ -14,6 +14,7 @@ import RefreshOrders from "./RefreshOrders";
 import Spin from "./Spin";
 import ActionMenu from "./ActionMenu";
 import { SIZE } from "@/constants";
+import FeedbackButton from "./FeedbackButton";
 
 function OrdersTable({ total, grOrder, orders, fetchOrders, fetchingOrders }) {
   return (
@@ -42,6 +43,9 @@ function OrdersTable({ total, grOrder, orders, fetchOrders, fetchingOrders }) {
               fetchOrders={fetchOrders}
               fetchingOrders={fetchingOrders}
             />
+          </div>
+          <div className="absolute top-1 left-1">
+            <FeedbackButton />
           </div>
         </TableCaption>
 
