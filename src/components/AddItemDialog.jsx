@@ -142,7 +142,7 @@ function AddItemDialog({ menu, members, onAddItem }) {
             <Select
               onValueChange={(val) => onSelectSize(val)}
               disabled={!itemDetail.available_size}
-              defaultValue={SIZE.S}
+              value={itemDetail.size ?? SIZE.S}
             >
               <SelectTrigger className="col-span-4 h-[60px]">
                 <SelectValue placeholder="Size gì?" />
