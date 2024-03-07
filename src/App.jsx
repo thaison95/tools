@@ -4,6 +4,7 @@ import AddItemDialog from "@/components/AddItemDialog";
 import { getMenu, getOrders, passioMembers, addItem } from "./utils/api";
 import usePreloadAssets from "./hooks/usePreloadAssets";
 import InstallApp from "./components/InstallApp";
+import WomanDaySaleDialog from "./components/Sales/WomanDaySaleDialog";
 
 const assetUrls = ["/voucher.webp"];
 
@@ -60,6 +61,8 @@ function App2() {
       <AddItemDialog menu={menu} members={members} onAddItem={onAddItem} />
 
       <InstallApp />
+
+      <WomanDaySaleDialog />
     </div>
   );
 }
